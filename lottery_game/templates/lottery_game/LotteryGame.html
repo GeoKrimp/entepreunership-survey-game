@@ -1,0 +1,44 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% block content %}
+<form method="post">
+
+    <!-- Hidden πεδίο που θα πάρει ΟΛΕΣ τις επιλογές -->
+    <input type="hidden" name="selections_json" id="selections_json">
+
+    {% for lottery in all_lotteries %}
+      <h2>{{ lottery.0 }} Lottery</h2>
+      {% for option in lottery.1 %}
+        <div>
+          <label>
+            <!-- ΔΕΝ αλλάζω τίποτα: name = όνομα λοταρίας -->
+            <input type="radio" name="{{ lottery.0 }}" value="{{ option.0 }}" required>
+            Option {{ option.0 }}: {{ option.1 }} to {{ option.2 }}
+            {% if option|length > 4 %}
+              to {{ option.4 }}
+            {% endif %}
+          </label>
+        </div>
+      {% endfor %}
+    {% endfor %}
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+(function(){
+  const form = document.querySelector('form');
+  form.addEventListener('submit', function(){
+    const data = {};
+    {% for lottery in all_lotteries %}
+      (function(){
+        const name = "{{ lottery.0 }}";
+        const checked = form.querySelector('input[name="{{ lottery.0 }}"]:checked');
+        if (checked) { data[name] = checked.value; }
+      })();
+    {% endfor %}
+    document.getElementById('selections_json').value = JSON.stringify(data);
+  });
+})();
+</script>
+{% endblock %}

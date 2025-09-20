@@ -1,0 +1,77 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Decisions{% endblock %}
+
+{% block content %}
+<style>
+.progress{height:1.5rem;background:#e9ecef;border-radius:12px;overflow:hidden;box-shadow:inset 0 1px 3px rgba(0,0,0,.1);margin-bottom:1rem;}
+.progress-bar{height:100%;background:linear-gradient(90deg,#6a11cb 0%,#2575fc 100%);border-radius:12px 0 0 12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:.9rem;transition:width .6s ease;}
+.choice-row td{vertical-align:middle;}
+</style>
+
+<div class="progress">
+  <div class="progress-bar" style="width: {{ progress }}%;">Step {{ step }} of {{ steps_total }}</div>
+</div>
+
+<input type="hidden" name="decisions_json" id="decisions_json">
+
+<h4>List X</h4>
+<table class="table table-sm">
+  <thead><tr><th>#</th><th>Left (you / other)</th><th>Right (you / other)</th><th>Your choice</th></tr></thead>
+  <tbody>
+    {% for r in rows_x %}
+    <tr class="choice-row" data-list="x" data-idx="{{ r.i }}">
+      <td>{{ forloop.counter }}</td>
+      <td>{{ r.left_me }} / {{ r.left_other }}</td>
+      <td>{{ r.right_me }} / {{ r.right_other }}</td>
+      <td>
+        <label><input type="radio" name="x_{{ r.i }}" value="L" required> L</label>
+        &nbsp;&nbsp;
+        <label><input type="radio" name="x_{{ r.i }}" value="R" required> R</label>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h4>List Y</h4>
+<table class="table table-sm">
+  <thead><tr><th>#</th><th>Left (you / other)</th><th>Right (you / other)</th><th>Your choice</th></tr></thead>
+  <tbody>
+    {% for r in rows_y %}
+    <tr class="choice-row" data-list="y" data-idx="{{ r.i }}">
+      <td>{{ forloop.counter }}</td>
+      <td>{{ r.left_me }} / {{ r.left_other }}</td>
+      <td>{{ r.right_me }} / {{ r.right_other }}</td>
+      <td>
+        <label><input type="radio" name="y_{{ r.i }}" value="L" required> L</label>
+        &nbsp;&nbsp;
+        <label><input type="radio" name="y_{{ r.i }}" value="R" required> R</label>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<p>{{ next_button }}</p>
+
+<script>
+(function(){
+  const N = {{ rows_x|length }};
+  function packChoices(){
+    const outX=[], outY=[];
+    for (let i=0;i<N;i++){
+      const x = document.querySelector(`input[name="x_${i}"]:checked`);
+      const y = document.querySelector(`input[name="y_${i}"]:checked`);
+      outX.push(x ? x.value : "");
+      outY.push(y ? y.value : "");
+    }
+    document.getElementById('decisions_json').value = JSON.stringify({x: outX, y: outY});
+  }
+  // πριν από submit πακετάρουμε τα radios σε JSON
+  const form = document.querySelector('form.otree-form');
+  form.addEventListener('submit', function(){ packChoices(); });
+})();
+</script>
+{% endblock %}

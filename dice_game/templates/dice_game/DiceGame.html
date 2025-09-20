@@ -1,0 +1,69 @@
+{% extends "global/Page.html" %}
+{% load otree static %}
+
+{% block content %}
+<script>
+var basePath = '/static/dice_game/img/';
+var rolls = [false, false, false]; // Καταγραφή αν έχουν γίνει όλες οι ρίψεις
+
+// Συνάρτηση για την προσομοίωση της ρίψης ζαριού και ενημέρωση των σχετικών στοιχείων
+function rollDice(id, index) {
+    var roll = Math.floor(Math.random() * 6) + 1;
+    var imgElement = document.getElementById(id + '_img');
+    imgElement.src = basePath + 'd' + roll + '.gif';
+    imgElement.style.display = 'block';
+    document.getElementById(id).value = roll;
+    document.getElementById(id + '_display').innerText = 'Roll: ' + roll;
+    rolls[index] = true;
+    checkFormReady();
+}
+
+// Έλεγχος αν όλες οι ρίψεις έχουν γίνει και αν έχει γίνει εισαγωγή στο πεδίο εκτίμησης
+function checkFormReady() {
+    var sumValue = document.getElementById('id_sum_dice').value;
+    var allRolled = rolls.every(x => x === true);
+    var submitButton = document.getElementById('submit_button');
+    if (allRolled && sumValue >= 3 && sumValue <= 18) {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
+}
+
+// Συνάρτηση για την επιβεβαίωση της υποβολής και τον υπολογισμό του payoff
+function confirmSubmission() {
+    var sumValue = parseInt(document.getElementById('id_sum_dice').value);
+    alert("Your estimated sum is: " + sumValue + " and your payoff is: €" + sumValue);
+}
+</script>
+
+<div class="mt-3">
+    <button type="button" onclick="rollDice('id_dice_roll_1', 0)">Roll Dice 1</button>
+    <span id="id_dice_roll_1_display">Roll: </span>
+    <img id="id_dice_roll_1_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
+    <input type="hidden" id="id_dice_roll_1" name="dice_roll_1">
+</div>
+
+<div class="mt-3">
+    <button type="button" onclick="rollDice('id_dice_roll_2', 1)">Roll Dice 2</button>
+    <span id="id_dice_roll_2_display">Roll: </span>
+    <img id="id_dice_roll_2_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
+    <input type="hidden" id="id_dice_roll_2" name="dice_roll_2">
+</div>
+
+<div class="mt-3">
+    <button type="button" onclick="rollDice('id_dice_roll_3', 2)">Roll Dice 3</button>
+    <span id="id_dice_roll_3_display">Roll: </span>
+    <img id="id_dice_roll_3_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
+    <input type="hidden" id="id_dice_roll_3" name="dice_roll_3">
+</div>
+
+<div class="mt-3">
+    <label for="id_sum_dice">Your guess for the sum of dice:</label>
+    <input type="number" id="id_sum_dice" name="sum_dice" min="3" max="18" onchange="checkFormReady()">
+</div>
+
+<div class="mt-3">
+    <button id="submit_button" onclick="confirmSubmission()" disabled>Submit</button>
+</div>
+{% endblock %}

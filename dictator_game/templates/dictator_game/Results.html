@@ -1,0 +1,11 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Summary{% endblock %}
+
+{% block content %}
+<p>You sent: <b>{{ sent }}</b> out of <b>{{ endowment }}</b>.</p>
+<p>Payouts if you are in role A:<br>
+A: <b>{{ a }}</b> &nbsp; B: <b>{{ b }}</b></p>
+<p>{{ next_button }}</p>
+{% endblock %}

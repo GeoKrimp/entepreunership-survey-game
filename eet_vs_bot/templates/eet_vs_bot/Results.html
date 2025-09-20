@@ -1,0 +1,12 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+{% block title %}Results{% endblock %}
+
+{% block content %}
+<p>
+  Implemented by: <b>{{ implemented_by }}</b><br>
+  List: <b>{{ list_kind }}</b>, Row: <b>{{ row }}</b><br>
+  Your payoff: <b>{{ you }}</b> — Other's payoff: <b>{{ other }}</b>
+</p>
+<p>{{ next_button }}</p>
+{% endblock %}

@@ -1,0 +1,31 @@
+{% extends "otree/Administration.html" %}
+{% load otree %}
+
+{% block content %}
+<h3>EET vs Bot — Admin Report</h3>
+<p>Round-level realized outcomes per participant.</p>
+<table class="table table-sm">
+  <thead>
+    <tr>
+      <th>Participant</th>
+      <th>By</th>
+      <th>List</th>
+      <th>Row</th>
+      <th>Payoff (you)</th>
+      <th>Payoff (other)</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for p in players %}
+    <tr>
+      <td>{{ p.participant.code }}</td>
+      <td>{{ p.implemented_by }}</td>
+      <td>{{ p.implemented_list|upper }}</td>
+      <td>{{ p.implemented_row|add:1 }}</td>
+      <td>{{ p.payoff_you_realized }}</td>
+      <td>{{ p.payoff_other_realized }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

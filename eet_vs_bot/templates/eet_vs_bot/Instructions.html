@@ -1,0 +1,20 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Instructions{% endblock %}
+
+{% block content %}
+<p>
+  You will face two lists (X and Y) with {{ n }} rows each.
+  In each row, choose between:
+</p>
+<ul>
+  <li><b>Left (L)</b>: unequal payoffs (you/other)</li>
+  <li><b>Right (R)</b>: equal payoffs ({{ equal }}, {{ equal }})</li>
+</ul>
+<p>
+  After you submit, <b>either your choices or the computer's</b> will be randomly
+  selected to determine payoffs. Then one random row among all will be implemented.
+</p>
+<p>{{ next_button }}</p>
+{% endblock %}

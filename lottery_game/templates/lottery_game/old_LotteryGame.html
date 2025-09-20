@@ -1,0 +1,28 @@
+
+
+<!--
+{% extends "global/Page.html" %}
+{% load otree static %}
+{% block content %}
+<form method="post">
+
+    {% for lottery in all_lotteries %}
+    <h2>{{ lottery.0 }} Lottery</h2>
+    {% for option in lottery.1 %}
+        <div>
+            <label>
+                <!-- Χρησιμοποιήστε το lottery.0 ως name για να ομαδοποιήσετε τα inputs -->
+                <input type="radio" name="{{ lottery.0 }}" value="{{ option.0 }}" required>
+                Option {{ option.0 }}: {{ option.1 }} to {{ option.2 }}
+                {% if option|length > 4 %}
+                    to {{ option.4 }}
+                {% endif %}
+            </label>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+    <button type="submit">Submit</button>
+</form>
+{% endblock %}
+-->

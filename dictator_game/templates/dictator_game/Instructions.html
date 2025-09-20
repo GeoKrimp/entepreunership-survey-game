@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Task 1 (Dictator Game){% endblock %}
+
+{% block content %}
+<p><b>In this section of the experiment you are faced with the following situation:</b></p>
+
+<p>At the beginning, Person A gets {{ endowment }}. Person B gets 0. If Person A wants, they can send money to Person B.
+However, Person A does not have to send any money.</p>
+
+<p><b>Details</b><br>
+Person A can send any amount from 0 to 20 to B, or send 0.</p>
+
+<p>Person B initially receives 0 and knows that Person A has these options. B learns A’s decision but does not make a decision
+and must accept A’s decision.</p>
+
+<p><b>Payouts</b><br>
+For A: {{ endowment }} minus amount sent to B.<br>
+For B: amount sent by A.</p>
+
+<p><b>Examples</b></p>
+<ol>
+  <li>A sends 0 → A: {{ endowment }}, B: 0.</li>
+  <li>A sends 10 → A: 10, B: 10.</li>
+  <li>A sends 20 → A: 0, B: 20.</li>
+  <li>A sends 4 → A: 16, B: 4.</li>
+</ol>
+
+<p><i>When this section is selected for your payout, the computer will randomly pair you with another participant
+and randomly assign roles. Only the decision of the person in role A determines the payouts.</i></p>
+
+<p>{{ next_button }}</p>
+{% endblock %}
