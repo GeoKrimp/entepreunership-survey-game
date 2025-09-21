@@ -6,11 +6,15 @@
 {% block content %}
 <style>
   .wrap{max-width:780px;margin:auto}
-  .toolbar{display:flex;gap:.75rem;align-items:center;justify-content:space-between;margin:.5rem 0 1rem}
-  .progress{height:1rem;border-radius:999px;overflow:hidden;background:#e5e7eb}
+  .progress{height:1rem;border-radius:999px;overflow:hidden;background:#e5e7eb;margin:.5rem 0 1rem}
   .progress>div{height:100%;width:100%;background:linear-gradient(90deg,#6a11cb,#2575fc)}
 
-  .dice-area{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;justify-items:center;margin:10px 0 16px}
+  /* --- Layout tweaks ζητημένα --- */
+  .actions-top{display:flex;justify-content:center;margin:8px 0 10px}
+  .sum-row{display:flex;justify-content:center;align-items:center;gap:.55rem;margin:10px 0 14px}
+  .submit-row{text-align:right;margin-top:6px}
+
+  .dice-area{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;justify-items:center;margin:10px 0 10px}
   .dice-wrap{perspective:800px}
   .die{
     width:120px;height:120px;display:grid;place-items:center;background:#fff;border-radius:16px;
@@ -42,17 +46,11 @@
 </style>
 
 <div class="wrap">
-
   <div class="progress" aria-hidden="true"><div></div></div>
 
-  <div class="toolbar">
-    <button type="button" id="rollBtn" class="btn-main">🎲 Roll all dice</button>
-    <div class="muted">
-      Sum guess:
-      <input type="number" id="id_sum_dice" name="sum_dice" class="pill"
-             min="3" max="18" style="width:90px;text-align:center">
-      <span class="payoff-preview" id="payoff">€0</span>
-    </div>
+  <!-- Κουμπί ΠΑΝΩ από τα ζάρια -->
+  <div class="actions-top">
+    <button type="button" id="rollBtn" class="otree-btn-next btn btn-primary">🎲 Roll all dice</button>
   </div>
 
   <!-- Hidden form inputs that oTree will save -->
@@ -60,6 +58,7 @@
   <input type="hidden" id="id_dice_roll_2" name="dice_roll_2">
   <input type="hidden" id="id_dice_roll_3" name="dice_roll_3">
 
+  <!-- Ζάρια -->
   <div class="dice-area">
     <div class="dice-wrap">
       <div class="die" id="die1"><img id="img1" src="{% static 'dice_game/img/d1.gif' %}" alt="die 1"></div>
@@ -75,16 +74,25 @@
     </div>
   </div>
 
+  <!-- Input ΚΑΤΩ από τα ζάρια -->
+  <div class="sum-row">
+    <span class="muted">Sum guess:</span>
+    <input type="number" id="id_sum_dice" name="sum_dice" class="pill" min="3" max="18" style="width:90px;text-align:center">
+    <span class="payoff-preview" id="payoff">€0</span>
+  </div>
+
   <p class="muted">Report the <b>sum</b> of the three dice (3–18). Payout = reported sum × €1.</p>
 
-  <p>
-    <button id="submitBtn" class="btn btn-primary" disabled>Submit</button>
-  </p>
+  <!-- Submit ΔΕΞΙΑ -->
+  <div class="submit-row">
+    <button id="submitBtn" class="otree-btn-next btn btn-primary" disabled>Submit</button>
+  </div>
 </div>
 
 <script>
 (function(){
-  const base = "{% static 'dice_game/img/' %}";
+  /* ΔΕΝ αλλάζω τον τρόπο path που έβαλες εσύ */
+  const base = "{% '/static/dice_game/img/' %}";
   const rollBtn = document.getElementById('rollBtn');
   const submitBtn = document.getElementById('submitBtn');
   const sumInput = document.getElementById('id_sum_dice');
@@ -101,20 +109,18 @@
   function animateDie(idx){
     const el = document.getElementById('die'+idx);
     el.classList.remove('rolling');
-    // force reflow to restart animation
-    void el.offsetWidth;
+    void el.offsetWidth; // restart animation
     el.classList.add('rolling');
   }
 
   function rollAll(){
     rollBtn.disabled = true;
-    // μικρή “σειρά” για να νιώθεις ότι ρίχνονται διαδοχικά
     [1,2,3].forEach((idx,i)=>{
       setTimeout(()=>{
         animateDie(idx);
         const v = rand();
         setDie(idx, v);
-        if(i===2){ // τελευταίο
+        if(i===2){
           rollBtn.disabled = false;
           validate();
         }
@@ -134,10 +140,7 @@
 
   rollBtn.addEventListener('click', rollAll);
   sumInput.addEventListener('input', validate);
-
-  // Submit: αφήνουμε το ο-tree να στείλει τη φόρμα
   submitBtn.addEventListener('click', function(){
-    // απλό native submit της οθόνης
     document.querySelector('form.otree-form').submit();
   });
 })();
