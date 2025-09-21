@@ -1,69 +1,145 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
 
+{% block title %}Dice Game{% endblock %}
+
 {% block content %}
+<style>
+  .wrap{max-width:780px;margin:auto}
+  .toolbar{display:flex;gap:.75rem;align-items:center;justify-content:space-between;margin:.5rem 0 1rem}
+  .progress{height:1rem;border-radius:999px;overflow:hidden;background:#e5e7eb}
+  .progress>div{height:100%;width:100%;background:linear-gradient(90deg,#6a11cb,#2575fc)}
+
+  .dice-area{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;justify-items:center;margin:10px 0 16px}
+  .dice-wrap{perspective:800px}
+  .die{
+    width:120px;height:120px;display:grid;place-items:center;background:#fff;border-radius:16px;
+    border:1px solid #e6e6e6;
+    box-shadow:
+      0 18px 28px rgba(0,0,0,.15),
+      inset 0 2px 0 rgba(255,255,255,.7),
+      inset 0 -3px 10px rgba(0,0,0,.08);
+    transform-style:preserve-3d;
+  }
+  .die img{width:84px;height:84px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.18))}
+  .rolling{animation:shake .8s ease}
+  @keyframes shake{
+    0%{transform:rotateZ(0) rotateX(0)}
+    20%{transform:rotateZ(8deg) rotateX(8deg)}
+    40%{transform:rotateZ(-8deg) rotateX(-6deg)}
+    60%{transform:rotateZ(5deg) rotateX(4deg)}
+    80%{transform:rotateZ(-3deg) rotateX(-2deg)}
+    100%{transform:rotateZ(0) rotateX(0)}
+  }
+  .muted{color:#6b7280;font-size:.95rem}
+  .pill{padding:.35rem .7rem;border-radius:999px;background:#f3f4f6}
+  .payoff-preview{font-weight:600}
+  .btn-main{
+    appearance:none;border:0;border-radius:12px;padding:.7rem 1.1rem;font-weight:600;
+    background:linear-gradient(90deg,#6a11cb,#2575fc);color:#fff;box-shadow:0 8px 18px rgba(80,120,255,.35);
+  }
+  .btn-main:disabled{opacity:.55;box-shadow:none}
+</style>
+
+<div class="wrap">
+
+  <div class="progress" aria-hidden="true"><div></div></div>
+
+  <div class="toolbar">
+    <button type="button" id="rollBtn" class="btn-main">🎲 Roll all dice</button>
+    <div class="muted">
+      Sum guess:
+      <input type="number" id="id_sum_dice" name="sum_dice" class="pill"
+             min="3" max="18" style="width:90px;text-align:center">
+      <span class="payoff-preview" id="payoff">€0</span>
+    </div>
+  </div>
+
+  <!-- Hidden form inputs that oTree will save -->
+  <input type="hidden" id="id_dice_roll_1" name="dice_roll_1">
+  <input type="hidden" id="id_dice_roll_2" name="dice_roll_2">
+  <input type="hidden" id="id_dice_roll_3" name="dice_roll_3">
+
+  <div class="dice-area">
+    <div class="dice-wrap">
+      <div class="die" id="die1"><img id="img1" src="{% static 'dice_game/img/d1.gif' %}" alt="die 1"></div>
+      <div class="muted">Die 1: <span id="lbl1">–</span></div>
+    </div>
+    <div class="dice-wrap">
+      <div class="die" id="die2"><img id="img2" src="{% static 'dice_game/img/d1.gif' %}" alt="die 2"></div>
+      <div class="muted">Die 2: <span id="lbl2">–</span></div>
+    </div>
+    <div class="dice-wrap">
+      <div class="die" id="die3"><img id="img3" src="{% static 'dice_game/img/d1.gif' %}" alt="die 3"></div>
+      <div class="muted">Die 3: <span id="lbl3">–</span></div>
+    </div>
+  </div>
+
+  <p class="muted">Report the <b>sum</b> of the three dice (3–18). Payout = reported sum × €1.</p>
+
+  <p>
+    <button id="submitBtn" class="btn btn-primary" disabled>Submit</button>
+  </p>
+</div>
+
 <script>
-var basePath = '/static/dice_game/img/';
-var rolls = [false, false, false]; // Καταγραφή αν έχουν γίνει όλες οι ρίψεις
+(function(){
+  const base = "{% static 'dice_game/img/' %}";
+  const rollBtn = document.getElementById('rollBtn');
+  const submitBtn = document.getElementById('submitBtn');
+  const sumInput = document.getElementById('id_sum_dice');
+  const payoffEl = document.getElementById('payoff');
 
-// Συνάρτηση για την προσομοίωση της ρίψης ζαριού και ενημέρωση των σχετικών στοιχείων
-function rollDice(id, index) {
-    var roll = Math.floor(Math.random() * 6) + 1;
-    var imgElement = document.getElementById(id + '_img');
-    imgElement.src = basePath + 'd' + roll + '.gif';
-    imgElement.style.display = 'block';
-    document.getElementById(id).value = roll;
-    document.getElementById(id + '_display').innerText = 'Roll: ' + roll;
-    rolls[index] = true;
-    checkFormReady();
-}
+  function rand(){ return Math.floor(Math.random()*6)+1; }
 
-// Έλεγχος αν όλες οι ρίψεις έχουν γίνει και αν έχει γίνει εισαγωγή στο πεδίο εκτίμησης
-function checkFormReady() {
-    var sumValue = document.getElementById('id_sum_dice').value;
-    var allRolled = rolls.every(x => x === true);
-    var submitButton = document.getElementById('submit_button');
-    if (allRolled && sumValue >= 3 && sumValue <= 18) {
-        submitButton.disabled = false;
-    } else {
-        submitButton.disabled = true;
-    }
-}
+  function setDie(idx, val){
+    document.getElementById('img'+idx).src = base + 'd' + val + '.gif';
+    document.getElementById('lbl'+idx).textContent = val;
+    document.getElementById('id_dice_roll_'+idx).value = val;
+  }
 
-// Συνάρτηση για την επιβεβαίωση της υποβολής και τον υπολογισμό του payoff
-function confirmSubmission() {
-    var sumValue = parseInt(document.getElementById('id_sum_dice').value);
-    alert("Your estimated sum is: " + sumValue + " and your payoff is: €" + sumValue);
-}
+  function animateDie(idx){
+    const el = document.getElementById('die'+idx);
+    el.classList.remove('rolling');
+    // force reflow to restart animation
+    void el.offsetWidth;
+    el.classList.add('rolling');
+  }
+
+  function rollAll(){
+    rollBtn.disabled = true;
+    // μικρή “σειρά” για να νιώθεις ότι ρίχνονται διαδοχικά
+    [1,2,3].forEach((idx,i)=>{
+      setTimeout(()=>{
+        animateDie(idx);
+        const v = rand();
+        setDie(idx, v);
+        if(i===2){ // τελευταίο
+          rollBtn.disabled = false;
+          validate();
+        }
+      }, i*220);
+    });
+  }
+
+  function validate(){
+    const s = parseInt(sumInput.value,10);
+    const ok = Number.isInteger(s) && s>=3 && s<=18
+               && document.getElementById('id_dice_roll_1').value
+               && document.getElementById('id_dice_roll_2').value
+               && document.getElementById('id_dice_roll_3').value;
+    payoffEl.textContent = '€' + (Number.isInteger(s)? s : 0);
+    submitBtn.disabled = !ok;
+  }
+
+  rollBtn.addEventListener('click', rollAll);
+  sumInput.addEventListener('input', validate);
+
+  // Submit: αφήνουμε το ο-tree να στείλει τη φόρμα
+  submitBtn.addEventListener('click', function(){
+    // απλό native submit της οθόνης
+    document.querySelector('form.otree-form').submit();
+  });
+})();
 </script>
-
-<div class="mt-3">
-    <button type="button" onclick="rollDice('id_dice_roll_1', 0)">Roll Dice 1</button>
-    <span id="id_dice_roll_1_display">Roll: </span>
-    <img id="id_dice_roll_1_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
-    <input type="hidden" id="id_dice_roll_1" name="dice_roll_1">
-</div>
-
-<div class="mt-3">
-    <button type="button" onclick="rollDice('id_dice_roll_2', 1)">Roll Dice 2</button>
-    <span id="id_dice_roll_2_display">Roll: </span>
-    <img id="id_dice_roll_2_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
-    <input type="hidden" id="id_dice_roll_2" name="dice_roll_2">
-</div>
-
-<div class="mt-3">
-    <button type="button" onclick="rollDice('id_dice_roll_3', 2)">Roll Dice 3</button>
-    <span id="id_dice_roll_3_display">Roll: </span>
-    <img id="id_dice_roll_3_img" src="{% static 'dice_game/img/d1.gif' %}" alt="Dice Roll">
-    <input type="hidden" id="id_dice_roll_3" name="dice_roll_3">
-</div>
-
-<div class="mt-3">
-    <label for="id_sum_dice">Your guess for the sum of dice:</label>
-    <input type="number" id="id_sum_dice" name="sum_dice" min="3" max="18" onchange="checkFormReady()">
-</div>
-
-<div class="mt-3">
-    <button id="submit_button" onclick="confirmSubmission()" disabled>Submit</button>
-</div>
 {% endblock %}
