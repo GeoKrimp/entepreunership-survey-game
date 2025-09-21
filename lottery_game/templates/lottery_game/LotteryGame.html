@@ -1,42 +1,72 @@
 {% extends "global/Page.html" %}
 {% load otree static %}
+
 {% block content %}
-<form method="post">
 
-    <!-- Hidden πεδίο που θα πάρει ΟΛΕΣ τις επιλογές -->
-    <input type="hidden" name="selections_json" id="selections_json">
+<!-- κρυφό πεδίο για όλες τις επιλογές -->
+<input type="hidden" name="selections_json" id="selections_json">
 
-    {% for lottery in all_lotteries %}
-      <h2>{{ lottery.0 }} Lottery</h2>
-      {% for option in lottery.1 %}
-        <div>
-          <label>
-            <!-- ΔΕΝ αλλάζω τίποτα: name = όνομα λοταρίας -->
+<style>
+  .wrap{max-width:900px;margin:auto}
+  .lottery-card{
+    background:#fff;border:1px solid #e5e7eb;border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,.04);
+    padding:16px;margin:14px 0;
+  }
+  .lottery-title{font-weight:700;font-size:1.05rem;margin:0 0 10px;color:#111827}
+
+  /* Κάθετη στοίχιση */
+  .options-stack{display:flex;flex-direction:column;gap:8px}
+  .option-row{
+    border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;
+    padding:10px 12px;transition:box-shadow .12s ease, border-color .12s ease, background .12s ease;
+    display:block;
+  }
+  .option-row:hover{box-shadow:0 8px 18px rgba(0,0,0,.06);background:#fff}
+  .option-row input[type="radio"]{margin-right:.5rem;accent-color:#6a11cb;vertical-align:middle}
+  /* επιλεγμένο (οπτικό) */
+  .option-row input[type="radio"]:checked ~ .option-text,
+  .option-row:has(input[type="radio"]:checked){
+    border-color:#c7d2fe; box-shadow:0 0 0 3px rgba(99,102,241,.12) inset; background:#fff;
+  }
+  .option-text{display:inline}
+</style>
+
+<div class="wrap">
+  {% for lottery in all_lotteries %}
+    <div class="lottery-card">
+      <div class="lottery-title">{{ lottery.0 }} Lottery</div>
+
+      <div class="options-stack">
+        {% for option in lottery.1 %}
+          <label class="option-row">
+            <!-- Βάζουμε required σε ΟΛΑ τα radios του ίδιου name: ο browser απαιτεί 1 επιλογή ανά ομάδα -->
             <input type="radio" name="{{ lottery.0 }}" value="{{ option.0 }}" required>
-            Option {{ option.0 }}: {{ option.1 }} to {{ option.2 }}
-            {% if option|length > 4 %}
-              to {{ option.4 }}
-            {% endif %}
+            <span class="option-text">
+              Option {{ option.0 }}: {{ option.1 }} to {{ option.2 }}
+              {% if option|length > 4 %} to {{ option.4 }}{% endif %}
+            </span>
           </label>
-        </div>
-      {% endfor %}
-    {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
 
-    <button type="submit">Submit</button>
-</form>
+  <p>{{ next_button }}</p>
+</div>
 
 <script>
 (function(){
-  const form = document.querySelector('form');
+  // ΕΞΩΤΕΡΙΚΗ φόρμα της oTree
+  const form = document.querySelector('form.otree-form');
+
+  // Πριν το submit, φτιάχνουμε selections_json από ΟΛΑ τα checked radios
   form.addEventListener('submit', function(){
     const data = {};
-    {% for lottery in all_lotteries %}
-      (function(){
-        const name = "{{ lottery.0 }}";
-        const checked = form.querySelector('input[name="{{ lottery.0 }}"]:checked');
-        if (checked) { data[name] = checked.value; }
-      })();
-    {% endfor %}
+    document.querySelectorAll('input[type="radio"]:checked').forEach(inp => {
+      // inp.name = όνομα λίστας, inp.value = επιλογή
+      data[inp.name] = inp.value;
+    });
     document.getElementById('selections_json').value = JSON.stringify(data);
   });
 })();
