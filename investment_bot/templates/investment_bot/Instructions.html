@@ -1,0 +1,28 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Investment Game{% endblock %}
+
+{% block content %}
+<p>
+  In this task you will play the role of <b>Person A</b> in an investment game.
+  You receive an initial endowment of <b>{{ endowment_eur }}€</b>.
+</p>
+
+<ul>
+  <li>You decide how much of your {{ endowment_eur }}€ to send to Person B.</li>
+  <li>The amount you send is <b>multiplied by {{ multiplier }}</b>.</li>
+  <li>A computer agent (Person B) then decides how much of this multiplied amount to send back to you.</li>
+</ul>
+
+<p>
+  Your payoff in this task is: <br>
+  <b>10€ − amount you send + amount returned by the computer agent.</b>
+</p>
+
+<p>
+  If this task is selected for payment, you will be paid according to your payoff in this game.
+</p>
+
+<p>{{ next_button }}</p>
+{% endblock %}

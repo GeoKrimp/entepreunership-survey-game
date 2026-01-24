@@ -47,6 +47,13 @@ SESSION_CONFIGS = [
         num_demo_participants=1,
         app_sequence=['dictator_game'],
     ),
+    dict(
+        name='investment_bot',
+        display_name='Investment Game vs Bot',
+        num_demo_participants=1,
+        app_sequence=['investment_bot'],
+    ),
+
 
 ]
 '''
@@ -61,6 +68,7 @@ SESSION_CONFIGS = [
             'dice_game',
             'lottery_game',
             'ravens_maze',
+            'investment_bot',
         ],
     ),
 ]

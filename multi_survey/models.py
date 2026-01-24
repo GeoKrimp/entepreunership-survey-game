@@ -2,10 +2,6 @@ from otree.api import *
 from pathlib import Path
 import csv
 
-# --- πάνω-πάνω στο models.py (πριν την κλάση C) ---
-from pathlib import Path
-import csv
-
 _DATA_DIR = Path(__file__).resolve().parent / 'data'
 _SURVEY_FILES = sorted(_DATA_DIR.glob('questionnaire*.csv')) if _DATA_DIR.exists() else []
 

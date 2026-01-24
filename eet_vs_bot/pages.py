@@ -4,26 +4,55 @@ from .models import C, ensure_payoff_tables
 import json, random
 
 
+
+
 class Instructions(Page):
     def vars_for_template(self):
         return dict(n=C.N, equal=C.EQUAL_PAYOFF)
 
 
-class Decision(Page):  # ΠΡΟΣΟΧΗ: Page, ΟΧΙ Player
+class Decision(Page):
     form_model = 'player'
-    form_fields = ['decisions_json']  # γεμίζει από το JS του template
+    form_fields = ['decisions_json']
 
     def vars_for_template(self):
-        ensure_payoff_tables(self.session)  # safety
+        ensure_payoff_tables(self.session)
 
-        mp_x = self.session.vars['mp_x']; op_x = self.session.vars['op_x']
-        mp_y = self.session.vars['mp_y']; op_y = self.session.vars['op_y']
+        mp_x = self.session.vars['mp_x']
+        op_x = self.session.vars['op_x']
+        mp_y = self.session.vars['mp_y']
+        op_y = self.session.vars['op_y']
         eq   = self.session.vars['equal']
 
-        rows_x = [dict(i=i, left_me=mp_x[i], left_other=op_x[i], right_me=eq, right_other=eq) for i in range(C.N)]
-        rows_y = [dict(i=i, left_me=mp_y[i], left_other=op_y[i], right_me=eq, right_other=eq) for i in range(C.N)]
+        # Στέλνουμε σκέτους αριθμούς στο template (όχι Currency)
+        rows_x = [
+            dict(
+                i=i,
+                left_me=int(mp_x[i]),
+                left_other=int(op_x[i]),
+                right_me=int(eq),
+                right_other=int(eq),
+            )
+            for i in range(C.N)
+        ]
+        rows_y = [
+            dict(
+                i=i,
+                left_me=int(mp_y[i]),
+                left_other=int(op_y[i]),
+                right_me=int(eq),
+                right_other=int(eq),
+            )
+            for i in range(C.N)
+        ]
 
-        return dict(rows_x=rows_x, rows_y=rows_y, progress=100, step=1, steps_total=1)
+        return dict(
+            rows_x=rows_x,
+            rows_y=rows_y,
+            progress=100,
+            step=1,
+            steps_total=1,
+        )
 
     def error_message(self, values):
         try:

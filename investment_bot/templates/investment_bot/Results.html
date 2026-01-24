@@ -1,0 +1,34 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Investment Game – Results{% endblock %}
+
+{% block content %}
+
+<h3>Results</h3>
+
+<p>
+  You started with an endowment of <b>{{ endowment_eur}}</b>.
+</p>
+
+<ul>
+  <li>You sent: <b>{{ sent }}</b></li>
+  <li>The experimenter multiplied this by {{ multiplier }}, so Person B received: <b>{{ tripled }}</b></li>
+  <li>The bot (Person B) returned: <b>{{ returned }}</b></li>
+</ul>
+
+<p>
+  Therefore your payoff in this game is:
+</p>
+
+<p style="margin-left:1rem;">
+  <b>{{ your_payoff }}</b>
+</p>
+
+<p>
+  The bot’s payoff in this game is: <b>{{ bot_payoff }}</b>
+</p>
+
+{{ next_button }}
+
+{% endblock %}
