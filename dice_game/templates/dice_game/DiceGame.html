@@ -91,12 +91,13 @@
 
 <script>
 (function(){
-  /* ΔΕΝ αλλάζω τον τρόπο path που έβαλες εσύ */
-  const base = "{% '/static/dice_game/img/' %}";
+  const base = "/static/dice_game/img/";
   const rollBtn = document.getElementById('rollBtn');
   const submitBtn = document.getElementById('submitBtn');
   const sumInput = document.getElementById('id_sum_dice');
   const payoffEl = document.getElementById('payoff');
+
+  let hasRolled = false;   // ✅ ΝΕΟ: flag για "έχω ρίξει ήδη τα ζάρια"
 
   function rand(){ return Math.floor(Math.random()*6)+1; }
 
@@ -109,19 +110,26 @@
   function animateDie(idx){
     const el = document.getElementById('die'+idx);
     el.classList.remove('rolling');
-    void el.offsetWidth; // restart animation
+    void el.offsetWidth;
     el.classList.add('rolling');
   }
 
   function rollAll(){
-    rollBtn.disabled = true;
+    // ✅ Αν έχει ήδη πατηθεί, δεν κάνουμε τίποτα
+    if (hasRolled) return;
+    hasRolled = true;
+
+    rollBtn.disabled = true;                // κλειδώνουμε το κουμπί
+    // προαιρετικό: αλλάζουμε κείμενο
+    // rollBtn.textContent = "Dice rolled";
+
     [1,2,3].forEach((idx,i)=>{
       setTimeout(()=>{
         animateDie(idx);
         const v = rand();
         setDie(idx, v);
         if(i===2){
-          rollBtn.disabled = false;
+          // ΔΕΝ το ξανανοίγουμε: παραμένει disabled
           validate();
         }
       }, i*220);
@@ -140,9 +148,11 @@
 
   rollBtn.addEventListener('click', rollAll);
   sumInput.addEventListener('input', validate);
+
   submitBtn.addEventListener('click', function(){
     document.querySelector('form.otree-form').submit();
   });
 })();
 </script>
+
 {% endblock %}

@@ -3,7 +3,6 @@
 
 {% block content %}
 
-<!-- κρυφό πεδίο για όλες τις επιλογές -->
 <input type="hidden" name="selections_json" id="selections_json">
 
 <style>
@@ -15,7 +14,6 @@
   }
   .lottery-title{font-weight:700;font-size:1.05rem;margin:0 0 10px;color:#111827}
 
-  /* Κάθετη στοίχιση */
   .options-stack{display:flex;flex-direction:column;gap:8px}
   .option-row{
     border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;
@@ -24,7 +22,7 @@
   }
   .option-row:hover{box-shadow:0 8px 18px rgba(0,0,0,.06);background:#fff}
   .option-row input[type="radio"]{margin-right:.5rem;accent-color:#6a11cb;vertical-align:middle}
-  /* επιλεγμένο (οπτικό) */
+
   .option-row input[type="radio"]:checked ~ .option-text,
   .option-row:has(input[type="radio"]:checked){
     border-color:#c7d2fe; box-shadow:0 0 0 3px rgba(99,102,241,.12) inset; background:#fff;
@@ -35,16 +33,19 @@
 <div class="wrap">
   {% for lottery in all_lotteries %}
     <div class="lottery-card">
-      <div class="lottery-title">{{ lottery.0 }} Lottery</div>
+      <div class="lottery-title">Lottery {{ forloop.counter }}</div>
+
 
       <div class="options-stack">
         {% for option in lottery.1 %}
           <label class="option-row">
-            <!-- Βάζουμε required σε ΟΛΑ τα radios του ίδιου name: ο browser απαιτεί 1 επιλογή ανά ομάδα -->
-            <input type="radio" name="{{ lottery.0 }}" value="{{ option.0 }}" required>
+            <!-- ίδιο name για κάθε λίστα, required = 1 επιλογή ανά λίστα -->
+            <input type="radio"
+                   name="{{ lottery.0 }}"
+                   value="{{ option.id }}"
+                   required>
             <span class="option-text">
-              Option {{ option.0 }}: {{ option.1 }} to {{ option.2 }}
-              {% if option|length > 4 %} to {{ option.4 }}{% endif %}
+              Option {{ option.id }}: {{ option.text }}
             </span>
           </label>
         {% endfor %}
@@ -57,14 +58,11 @@
 
 <script>
 (function(){
-  // ΕΞΩΤΕΡΙΚΗ φόρμα της oTree
   const form = document.querySelector('form.otree-form');
 
-  // Πριν το submit, φτιάχνουμε selections_json από ΟΛΑ τα checked radios
   form.addEventListener('submit', function(){
     const data = {};
     document.querySelectorAll('input[type="radio"]:checked').forEach(inp => {
-      // inp.name = όνομα λίστας, inp.value = επιλογή
       data[inp.name] = inp.value;
     });
     document.getElementById('selections_json').value = JSON.stringify(data);
