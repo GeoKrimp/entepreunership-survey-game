@@ -1,6 +1,12 @@
 from otree.api import *
 from .models import C, Subsession, Group, Player
 
+class Instructions(Page):
+    def is_displayed(self):
+        # Αν το RMET έχει μόνο 1 round αυτό απλά είναι πάντα True,
+        # αλλά είναι καλή πρακτική να το περιορίζουμε στον 1ο γύρο.
+        return self.round_number == 1
+
 class AllItems(Page):
     form_model = 'player'
 
@@ -30,4 +36,4 @@ class AllItems(Page):
                 total += 1
         self.player.score_total = total
 
-page_sequence = [AllItems]
+page_sequence = [Instructions, AllItems]

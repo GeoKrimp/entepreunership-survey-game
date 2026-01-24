@@ -1,0 +1,42 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Reading the Mind in the Eyes – Instructions
+{% endblock %}
+
+{% block content %}
+
+<h3>Instructions</h3>
+
+<p>
+  In the next part of the experiment, you will see <b>36 images</b> showing
+  only the eye region of different faces.
+</p>
+
+<p>
+  For each image, you will be asked to choose the mental state or emotion
+  that best describes what the person in the picture is feeling or thinking.
+  Please select the option that you believe is the most accurate according
+  to your judgement.
+</p>
+
+<p>
+  For every <b>correct answer</b>, you will earn <b>€0.50</b>.
+</p>
+
+<p>
+  If the system chooses this game for your payment, you will be paid
+  the <b>sum of the correct answers</b> in this game.
+</p>
+
+<p>
+  Please answer carefully and do not rush. When you are ready, click
+  <b>"Next"</b> to begin.
+</p>
+
+<p>
+  {{ next_button }}
+</p>
+
+{% endblock %}
