@@ -40,4 +40,9 @@ class FinalResults(Page):
             total=C.NUM_ROUNDS,
         )
 
-page_sequence = [RavensMaze]
+class Instructions(Page):
+    def is_displayed(self):
+        # Οι οδηγίες να φαίνονται μόνο στον 1ο γύρο
+        return self.round_number == 1
+
+page_sequence = [Instructions, RavensMaze]

@@ -1,0 +1,35 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Ravens Maze – Instructions
+{% endblock %}
+
+{% block content %}
+
+<h3>Instructions</h3>
+
+<p>
+  In the next part of the experiment, you will see <b>18 images</b>.
+  Each image is a puzzle, and your task is to choose the option that you believe
+  correctly completes the pattern.
+</p>
+
+<p>
+  For every <b>correct answer</b>, you will earn <b>1 euro</b>.
+</p>
+
+<p>
+  If the system chooses this game for your payment, you will be paid
+  the <b>sum of the correct answers</b> you gave in this game.
+</p>
+
+<p>
+  Please take your time and answer as accurately as you can.
+</p>
+
+<p>
+  {{ next_button }}
+</p>
+
+{% endblock %}

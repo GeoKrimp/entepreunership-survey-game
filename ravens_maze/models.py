@@ -3,7 +3,7 @@ from otree.api import *
 class C(BaseConstants):
     NAME_IN_URL = 'ravens_maze'
     PLAYERS_PER_GROUP = None
-    NUM_ROUNDS = 10
+    NUM_ROUNDS = 18
 
     # Επιλογές a–f
     CHOICES = [('a','a'), ('b','b'), ('c','c'), ('d','d'), ('e','e'), ('f','f')]
