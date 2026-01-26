@@ -25,6 +25,14 @@ SESSION_CONFIGS = [
             'multi_survey',  # 1) Survey (όλα τα ερωτηματολόγια)
         ],
     ),
+    dict(
+        name='Outro',
+        display_name='outro',
+        num_demo_participants=1,
+        app_sequence=[
+            'outro',  # 1) Survey (όλα τα ερωτηματολόγια)
+        ],
+    ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(

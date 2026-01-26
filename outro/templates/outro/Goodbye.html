@@ -1,0 +1,77 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}Welcome to the Study{% endblock %}
+
+{% block content %}
+
+<style>
+  .welcome-wrap{
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .welcome-card{
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+    border: 1px solid #e5e7eb;
+  }
+  .welcome-card h2{
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+  .welcome-subtitle{
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-bottom: 1.2rem;
+  }
+  .welcome-card h3{
+    margin-top: 1.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.05rem;
+  }
+  .welcome-card p{
+    margin-bottom: 0.55rem;
+  }
+  .welcome-list{
+    margin: 0.4rem 0 0.8rem 1.2rem;
+    padding: 0;
+  }
+  .welcome-list li{
+    margin-bottom: 0.25rem;
+  }
+  .welcome-meta{
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+</style>
+
+<div class="welcome-wrap">
+  <div class="welcome-card">
+
+    <h2>Thank you for participating to the Study!</h2>
+    <div class="welcome-subtitle">
+      University of Oulu | Behavioural and Experimental Economics Lab
+    </div>
+
+    <p>
+      Thank you for your interest in participating in our study.
+    </p>
+
+    <p>Remember that:</p>
+    <ul class="welcome-list">
+      <li>All responses will be kept anonymous and confidential.</li>
+      <li>You will receive compensation in accordance with the instructions provided.</li>
+    </ul>
+
+      <p style="margin-top: 1.5rem;">
+      Thank you once again for your time and contribution!
+    </p>
+
+
+  </div>
+</div>
+
+{% endblock %}
