@@ -40,12 +40,24 @@
       <tr>
         <td class="q-label">{{ it.question }}</td>
         <td>
-          <select class="form-select" name="{{ it.field }}" required>
-            <option value="" selected>--------</option>
-            {% for opt in it.options %}
-              <option value="{{ opt }}">{{ opt }}</option>
-            {% endfor %}
-          </select>
+          {# Αν υπάρχουν options -> dropdown, αλλιώς free text/number #}
+          {% if it.options %}
+            <select class="form-select" name="{{ it.field }}" required>
+              <option value="" selected>--------</option>
+              {% for opt in it.options %}
+                <option value="{{ opt }}">{{ opt }}</option>
+              {% endfor %}
+            </select>
+          {% else %}
+            {# Π.χ. "What is your age?" χωρίς options -> ελεύθερο αριθμητικό πεδίο #}
+            <input type="number"
+                   name="{{ it.field }}"
+                   class="form-control"
+                   min="18"
+                   max="80"
+                   placeholder="Enter your age (18–80)"
+                   required>
+          {% endif %}
         </td>
       </tr>
     {% endfor %}
