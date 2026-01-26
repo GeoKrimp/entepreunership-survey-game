@@ -1,0 +1,72 @@
+{% extends "global/Page.html" %}
+{% load otree %}
+
+{% block title %}
+Welcome
+{% endblock %}
+
+{% block content %}
+
+<div class="container" style="max-width: 800px;">
+
+  <div class="mb-3">
+    <h3>Welcome to the experiment</h3>
+    <p>
+      Thank you for taking part in this study.
+      The experiment consists of several parts: questionnaires and decision-making tasks.
+      In each part you will receive instructions before you make any decisions.
+    </p>
+  </div>
+
+  <div class="mb-3">
+    <h5>What you will do</h5>
+    <ul>
+      <li>First, you will answer a set of questionnaires about yourself.</li>
+      <li>Then, you will complete a series of decision-making and cognitive tasks (games).</li>
+      <li>In each task, please read the instructions carefully and answer as honestly as possible.</li>
+    </ul>
+  </div>
+
+  <div class="mb-3">
+    <h5>Payment</h5>
+    <p>
+      Some of the tasks are incentivised. For these tasks, your decisions or correct answers
+      can affect your payoff.
+    </p>
+    <p>
+      At the end of the experiment, <b>one of the incentivised tasks will be randomly selected</b>
+      for payment. Your payment from that task will be added to any fixed participation fee.
+    </p>
+    <p>
+      Please treat all decisions as if they were for real money.
+    </p>
+  </div>
+
+  <div class="mb-3">
+    <h5>Duration</h5>
+    <p>
+      The entire experiment is expected to take about
+      <b>{{ estimated_minutes }} minutes</b>. Please make sure you have enough time and that
+      you are in a quiet environment without distractions.
+    </p>
+  </div>
+
+  <div class="mb-3">
+    <h5>Confidentiality</h5>
+    <p>
+      All your answers will be treated confidentially and analysed only in anonymised form.
+      There are no “right” or “wrong” personal opinions; we are interested in your genuine responses.
+    </p>
+  </div>
+
+  <p>
+    When you are ready to begin, click <b>Next</b> to proceed to the first part of the experiment.
+  </p>
+
+  <p>
+    {{ next_button }}
+  </p>
+
+</div>
+
+{% endblock %}
