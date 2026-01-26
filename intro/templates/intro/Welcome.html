@@ -1,72 +1,102 @@
 {% extends "global/Page.html" %}
 {% load otree %}
 
-{% block title %}
-Welcome
-{% endblock %}
+{% block title %}Welcome to the Study{% endblock %}
 
 {% block content %}
 
-<div class="container" style="max-width: 800px;">
+<style>
+  .welcome-wrap{
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .welcome-card{
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 24px 28px;
+    box-shadow: 0 12px 30px rgba(15,23,42,0.12);
+    border: 1px solid #e5e7eb;
+  }
+  .welcome-card h2{
+    margin-top: 0;
+    margin-bottom: 0.4rem;
+  }
+  .welcome-subtitle{
+    font-size: 0.95rem;
+    color: #6b7280;
+    margin-bottom: 1.2rem;
+  }
+  .welcome-card h3{
+    margin-top: 1.4rem;
+    margin-bottom: 0.4rem;
+    font-size: 1.05rem;
+  }
+  .welcome-card p{
+    margin-bottom: 0.55rem;
+  }
+  .welcome-list{
+    margin: 0.4rem 0 0.8rem 1.2rem;
+    padding: 0;
+  }
+  .welcome-list li{
+    margin-bottom: 0.25rem;
+  }
+  .welcome-meta{
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-top: 0.5rem;
+  }
+</style>
 
-  <div class="mb-3">
-    <h3>Welcome to the experiment</h3>
+<div class="welcome-wrap">
+  <div class="welcome-card">
+
+    <h2>Welcome to the Study!</h2>
+    <div class="welcome-subtitle">
+      University of Oulu | Behavioural and Experimental Economics Lab
+    </div>
+
     <p>
-      Thank you for taking part in this study.
-      The experiment consists of several parts: questionnaires and decision-making tasks.
-      In each part you will receive instructions before you make any decisions.
+      Thank you for your interest in participating in our study.
+      This research is being conducted by the University of Oulu and aims to better
+      understand decision-making and behavior in different social and economic contexts.
+      Your participation is valuable and will contribute to advancing knowledge in the
+      fields of behavioral and experimental economics.
     </p>
-  </div>
 
-  <div class="mb-3">
-    <h5>What you will do</h5>
-    <ul>
-      <li>First, you will answer a set of questionnaires about yourself.</li>
-      <li>Then, you will complete a series of decision-making and cognitive tasks (games).</li>
-      <li>In each task, please read the instructions carefully and answer as honestly as possible.</li>
+    <h3>What to Expect</h3>
+    <p>
+      The study consists of some economic games. It should take approximately
+      <b>20 minutes</b> to complete.
+    </p>
+
+    <p>Please note:</p>
+    <ul class="welcome-list">
+      <li>All responses will be kept anonymous and confidential.</li>
+      <li>You may withdraw from the study at any time without providing a reason.</li>
+      <li>You will receive compensation in accordance with the instructions provided.</li>
     </ul>
+
+    <h3>Before You Begin</h3>
+    <p>
+      Please ensure you are in a quiet environment where you can focus without interruptions.
+      Read all instructions carefully, and feel free to take your time with each task.
+    </p>
+
+    <p class="welcome-meta">
+      By clicking <b>"Next"</b> below, you confirm that you have read and understood the
+      information above and agree to participate in this study.
+    </p>
+
+    <p style="margin-top: 1.5rem;">
+      Thank you once again for your time and contribution!
+    </p>
+
+    <p>
+      {{ next_button }}
+    </p>
+
   </div>
-
-  <div class="mb-3">
-    <h5>Payment</h5>
-    <p>
-      Some of the tasks are incentivised. For these tasks, your decisions or correct answers
-      can affect your payoff.
-    </p>
-    <p>
-      At the end of the experiment, <b>one of the incentivised tasks will be randomly selected</b>
-      for payment. Your payment from that task will be added to any fixed participation fee.
-    </p>
-    <p>
-      Please treat all decisions as if they were for real money.
-    </p>
-  </div>
-
-  <div class="mb-3">
-    <h5>Duration</h5>
-    <p>
-      The entire experiment is expected to take about
-      <b>{{ estimated_minutes }} minutes</b>. Please make sure you have enough time and that
-      you are in a quiet environment without distractions.
-    </p>
-  </div>
-
-  <div class="mb-3">
-    <h5>Confidentiality</h5>
-    <p>
-      All your answers will be treated confidentially and analysed only in anonymised form.
-      There are no “right” or “wrong” personal opinions; we are interested in your genuine responses.
-    </p>
-  </div>
-
-  <p>
-    When you are ready to begin, click <b>Next</b> to proceed to the first part of the experiment.
-  </p>
-
-  <p>
-    {{ next_button }}
-  </p>
-
 </div>
 
 {% endblock %}

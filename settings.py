@@ -17,6 +17,14 @@ SESSION_CONFIGS = [
             'investment_bot', # 8) Investment game vs bot
         ],
     ),
+    dict(
+        name='Survey',
+        display_name='Survey',
+        num_demo_participants=1,
+        app_sequence=[
+            'multi_survey',  # 1) Survey (όλα τα ερωτηματολόγια)
+        ],
+    ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
