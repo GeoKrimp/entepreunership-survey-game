@@ -6,60 +6,170 @@
 <input type="hidden" name="selections_json" id="selections_json">
 
 <style>
-  .wrap{max-width:900px;margin:auto}
+  .lotteries-grid{
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    max-width: 900px;
+  }
+
   .lottery-card{
-    background:#fff;border:1px solid #e5e7eb;border-radius:14px;
-    box-shadow:0 8px 20px rgba(0,0,0,.04);
-    padding:16px;margin:14px 0;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px;
+    background: #ffffff;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   }
-  .lottery-title{font-weight:700;font-size:1.05rem;margin:0 0 10px;color:#111827}
 
-  .options-stack{display:flex;flex-direction:column;gap:8px}
-  .option-row{
-    border:1px solid #e5e7eb;border-radius:10px;background:#fafafa;
-    padding:10px 12px;transition:box-shadow .12s ease, border-color .12s ease, background .12s ease;
-    display:block;
+  .lottery-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
   }
-  .option-row:hover{box-shadow:0 8px 18px rgba(0,0,0,.06);background:#fff}
-  .option-row input[type="radio"]{margin-right:.5rem;accent-color:#6a11cb;vertical-align:middle}
 
-  .option-row input[type="radio"]:checked ~ .option-text,
-  .option-row:has(input[type="radio"]:checked){
-    border-color:#c7d2fe; box-shadow:0 0 0 3px rgba(99,102,241,.12) inset; background:#fff;
+  .lottery-title{
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0;
   }
-  .option-text{display:inline}
+
+  .lottery-sub{
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .table-wrap{
+    overflow-x: auto;
+  }
+
+  table.lottery-table{
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .lottery-table th,
+  .lottery-table td{
+    padding: 10px 12px;
+    text-align: center;
+    border-top: 1px solid #eef2f7;
+  }
+
+  .lottery-table thead th{
+    background: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+    color: #475569;
+    border-top: none;
+  }
+
+  .lottery-table td.opt{
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+    color: #0f172a;
+  }
+
+  .pay{
+    display: inline-block;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .choice{
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .choice input{
+    transform: scale(1.15);
+  }
+
+  .actions{
+    max-width: 900px;
+    margin-top: 16px;
+  }
 </style>
 
-<div class="wrap">
+<div class="lotteries-grid">
+
   {% for lottery in all_lotteries %}
     <div class="lottery-card">
-      <div class="lottery-title">Lottery {{ forloop.counter }}</div>
 
-
-      <div class="options-stack">
-        {% for option in lottery.1 %}
-          <label class="option-row">
-            <!-- ίδιο name για κάθε λίστα, required = 1 επιλογή ανά λίστα -->
-            <input type="radio"
-                   name="{{ lottery.0 }}"
-                   value="{{ option.id }}"
-                   required>
-            <span class="option-text">
-              Option {{ option.id }}: {{ option.text }}
-            </span>
-          </label>
-        {% endfor %}
+      <div class="lottery-head">
+        <h3 class="lottery-title">Lottery {{ forloop.counter }}</h3>
+        <div class="lottery-sub">Choose exactly one option</div>
       </div>
+
+      <div class="table-wrap">
+        <table class="lottery-table">
+          <thead>
+            <tr>
+              <th style="text-align:left;">Option</th>
+              <th>Outcome 1</th>
+              <th>Outcome 2</th>
+
+              {% if lottery.n_outcomes == 3 %}
+                <th>Outcome 3</th>
+              {% endif %}
+
+              <th style="width:90px;">Select</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for option in lottery.rows %}
+              <tr>
+                <td class="opt">Option {{ option.id }}</td>
+
+                <td>
+                  <span class="pay">€{{ option.payoffs.0 }}</span>
+                </td>
+
+                <td>
+                  <span class="pay">€{{ option.payoffs.1 }}</span>
+                </td>
+
+                {% if lottery.n_outcomes == 3 %}
+                  <td>
+                    <span class="pay">€{{ option.payoffs.2 }}</span>
+                  </td>
+                {% endif %}
+
+                <td>
+                  <label class="choice">
+                    <input type="radio"
+                           name="{{ lottery.name }}"
+                           value="{{ option.id }}"
+                           required>
+                    Pick
+                  </label>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
     </div>
   {% endfor %}
 
+</div>
+
+<div class="actions">
   <p>{{ next_button }}</p>
 </div>
 
 <script>
 (function(){
   const form = document.querySelector('form.otree-form');
-
   form.addEventListener('submit', function(){
     const data = {};
     document.querySelectorAll('input[type="radio"]:checked').forEach(inp => {
@@ -69,4 +179,5 @@
   });
 })();
 </script>
+
 {% endblock %}

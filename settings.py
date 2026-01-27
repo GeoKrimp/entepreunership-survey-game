@@ -33,6 +33,22 @@ SESSION_CONFIGS = [
             'outro',  # 1) Survey (όλα τα ερωτηματολόγια)
         ],
     ),
+    dict(
+        name='Lottery_Game',
+        display_name='Lottery',
+        num_demo_participants=1,
+        app_sequence=[
+            'lottery_game',  # 1) Survey (όλα τα ερωτηματολόγια)
+        ],
+    ),
+    dict(
+        name='EET_vs_Bot',
+        display_name='EET',
+        num_demo_participants=1,
+        app_sequence=[
+            'eet_vs_bot',  # 1) Survey (όλα τα ερωτηματολόγια)
+        ],
+    ),
 ]
 
 SESSION_CONFIG_DEFAULTS = dict(
