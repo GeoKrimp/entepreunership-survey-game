@@ -15,14 +15,15 @@ SESSION_CONFIGS = [
             'eet_vs_bot',     # 6) EET vs Bot
             'dictator_game',  # 7) Dictator game
             'investment_bot', # 8) Investment game vs bot
+            'outro',           # 9) Outro
         ],
     ),
     dict(
-        name='Survey',
-        display_name='Survey',
+        name='ravens_maze',
+        display_name='Ravens Maze',
         num_demo_participants=1,
         app_sequence=[
-            'multi_survey',  # 1) Survey (όλα τα ερωτηματολόγια)
+            'ravens_maze',  # 1) Survey (όλα τα ερωτηματολόγια)
         ],
     ),
     dict(

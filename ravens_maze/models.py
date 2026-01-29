@@ -33,7 +33,6 @@ class Player(BasePlayer):
     answer = models.StringField(
         choices=C.CHOICES,
         widget=widgets.RadioSelectHorizontal,
-        label='Επίλεξε την ορθή απάντηση'
     )
     # σωστό/λάθος για τον γύρο (αν έχουμε κλειδί)
     is_correct = models.BooleanField(initial=False)
