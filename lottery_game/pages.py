@@ -17,7 +17,8 @@ class LotteryGame(Page):
             data = {}
 
         missing = []
-        for name, _rows in self.participant.vars.get('lotteries', []):
+        for lot in self.participant.vars.get('lotteries', []):
+            name = lot['name']
             if name not in data:
                 missing.append(name)
 
