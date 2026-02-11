@@ -7,7 +7,7 @@
 
 <style>
   .welcome-wrap{
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
   }
   .welcome-card{
@@ -17,8 +17,27 @@
     box-shadow: 0 12px 30px rgba(15,23,42,0.12);
     border: 1px solid #e5e7eb;
   }
+
+  /* LOGO STRIP */
+  .welcome-logos{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;   /* ένα αριστερά, ένα δεξιά */
+    margin-bottom: 18px;
+  }
+  .welcome-logos img{
+    height: 100px;
+    object-fit: contain;
+  }
+  .welcome-logos-divider{
+    font-size: 1.4rem;
+    color: #9ca3af;
+    font-weight: 500;
+    margin: 0 10px;
+  }
+
   .welcome-card h2{
-    margin-top: 0;
+    margin-top: 0.2rem;
     margin-bottom: 0.4rem;
   }
   .welcome-subtitle{
@@ -51,17 +70,24 @@
 <div class="welcome-wrap">
   <div class="welcome-card">
 
+    <!-- Λογότυπα: ένα αριστερά, ένα δεξιά -->
+    <div class="welcome-logos">
+      <img src="/static/intro/University-of-Oulu.png" alt="University of Oulu logo">
+      <span class="welcome-logos-divider"></span>
+      <img src="/static/intro/upatras_logo.png" alt="University of Patras logo">
+    </div>
+
     <h2>Welcome to the Study!</h2>
     <div class="welcome-subtitle">
-      University of Oulu | Behavioural and Experimental Economics Lab
+      University of Oulu, Behavioural and Experimental Economics Lab &amp;<br>University of Patras
     </div>
 
     <p>
       Thank you for your interest in participating in our study.
-      This research is being conducted by the University of Oulu and aims to better
-      understand decision-making and behavior in different social and economic contexts.
-      Your participation is valuable and will contribute to advancing knowledge in the
-      fields of behavioral and experimental economics.
+      This research is being conducted by the University of Oulu and the University of Patras
+      and aims to better understand decision-making and behavior in different social and
+      economic contexts. Your participation is valuable and will contribute to advancing
+      knowledge in the fields of behavioral and experimental economics.
     </p>
 
     <h3>What to Expect</h3>

@@ -19,6 +19,14 @@ SESSION_CONFIGS = [
         ],
     ),
     dict(
+            name='intro',
+            display_name='Intro',
+            num_demo_participants=1,
+            app_sequence=[
+                'intro',  # 1) Survey (όλα τα ερωτηματολόγια)
+            ],
+        ),
+    dict(
         name='ravens_maze',
         display_name='Ravens Maze',
         num_demo_participants=1,
